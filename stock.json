@@ -1,0 +1,524 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "stock",
+    "description": "US Stock quote and watch list API\n\nExample stock symbols to use:\nAAPL, INTC, AMZN, TXN, NVDA, MSFT, TSLA",
+    "termsOfService": "https://github.com/lbrenman",
+    "contact": {
+      "name": "Leor Brenman",
+      "url": "https://github.com/lbrenman",
+      "email": "lbrenman99@hotmail.com"
+    },
+    "license": {
+      "url": "https://github.com/lbrenman",
+      "name": "N/A"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local"
+    }
+  ],
+  "paths": {
+    "/quote": {
+      "get": {
+        "tags": [
+          "StockQuote"
+        ],
+        "summary": "Get Quote",
+        "description": "Get the stock quote for a given symbol",
+        "operationId": "get-stock-quote",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "description": "Stock symbol",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "AAPL"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteResponse"
+                },
+                "examples": {
+                  "AAPL": {
+                    "value": {
+                      "Quote": {
+                        "Price": 210.62,
+                        "Change": -3.48,
+                        "ChangePercent": -1.6254,
+                        "DayHigh": 216.07,
+                        "DayLow": 210.3,
+                        "OpenPrice": 215.805,
+                        "PreviousClose": 214.1,
+                        "Symbol": "AAPL",
+                        "Name": "Apple Inc"
+                      }
+                    }
+                  },
+                  "TXN": {
+                    "value": {
+                      "Quote": {
+                        "Price": 194.53,
+                        "Change": 1.1,
+                        "ChangePercent": 0.5687,
+                        "DayHigh": 197.89,
+                        "DayLow": 193.5,
+                        "OpenPrice": 194.15,
+                        "PreviousClose": 193.43,
+                        "Symbol": "TXN",
+                        "Name": "Texas Instruments Inc"
+                      }
+                    }
+                  },
+                  "INTC": {
+                    "value": {
+                      "Quote": {
+                        "Price": 30.97,
+                        "Change": 0.38,
+                        "ChangePercent": 1.2422,
+                        "DayHigh": 31.31,
+                        "DayLow": 30.72,
+                        "OpenPrice": 30.769,
+                        "PreviousClose": 30.59,
+                        "Symbol": "INTC",
+                        "Name": "Intel Corp"
+                      }
+                    }
+                  },
+                  "AMZN": {
+                    "value": {
+                      "Quote": {
+                        "Price": 193.25,
+                        "Change": -4.6,
+                        "ChangePercent": -2.325,
+                        "DayHigh": 198.85,
+                        "DayLow": 192.5,
+                        "OpenPrice": 197.75,
+                        "PreviousClose": 197.85,
+                        "Symbol": "AMZN",
+                        "Name": "Amazon.com Inc"
+                      }
+                    }
+                  },
+                  "T": {
+                    "value": {
+                      "Quote": {
+                        "Price": 19.11,
+                        "Change": 0.36,
+                        "ChangePercent": 1.92,
+                        "DayHigh": 19.13,
+                        "DayLow": 18.78,
+                        "OpenPrice": 18.8,
+                        "PreviousClose": 18.75,
+                        "Symbol": "T",
+                        "Name": "AT&T Inc"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "content-type": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "content-type"
+              }
+            }
+          },
+          "204": {
+            "$ref": "#/components/responses/204"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/400Response"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Missing symbol"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000",
+            "description": "Local"
+          }
+        ]
+      }
+    },
+    "/watchlist": {
+      "get": {
+        "tags": [
+          "StockQuote"
+        ],
+        "summary": "Get watchlist",
+        "description": "Get watch list based on comma separated list of symbols",
+        "operationId": "get-watchlist",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "description": "comma separated list of symbols",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "INTC,TXN,AAPL"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchlistResponse"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "Watchlist": [
+                        {
+                          "Price": 198.47,
+                          "Change": 0.17,
+                          "ChangePercent": 0.0857,
+                          "Symbol": "TXN",
+                          "Name": "Texas Instruments Inc"
+                        },
+                        {
+                          "Price": 22.77,
+                          "Change": 0.33,
+                          "ChangePercent": 1.4706,
+                          "Symbol": "INTC",
+                          "Name": "Intel Corp"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "content-type": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "content-type"
+              }
+            }
+          },
+          "204": {
+            "$ref": "#/components/responses/204"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/400Response"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Missing symbols"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000",
+            "description": "Local"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "StockQuote"
+    }
+  ],
+  "components": {
+    "responses": {
+      "204": {
+        "description": "Symbol(s) not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/204Response"
+            }
+          }
+        },
+        "headers": {
+          "content-type": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "content-type"
+          }
+        }
+      },
+      "400": {
+        "description": "Missing parameter",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/400Response"
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "message": "Missing symbol"
+                }
+              },
+              "Example 2": {
+                "value": {
+                  "message": "Missing symbols"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Stock server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/500Response"
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "content-type": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "content-type"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "QuoteResponse": {
+        "type": "object",
+        "title": "QuoteResponse",
+        "properties": {
+          "Quote": {
+            "$ref": "#/components/schemas/Quote"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "Quote": {
+              "Price": 19.11,
+              "Change": 0.36,
+              "ChangePercent": 1.92,
+              "DayHigh": 19.13,
+              "DayLow": 18.78,
+              "OpenPrice": 18.8,
+              "PreviousClose": 18.75,
+              "Symbol": "T",
+              "Name": "AT&T Inc"
+            }
+          },
+          "Example 2": {
+            "Quote": {
+              "Price": 210.62,
+              "Change": -3.48,
+              "ChangePercent": -1.6254,
+              "DayHigh": 216.07,
+              "DayLow": 210.3,
+              "OpenPrice": 215.805,
+              "PreviousClose": 214.1,
+              "Symbol": "AAPL",
+              "Name": "Apple Inc"
+            }
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "Price": {
+            "type": "number"
+          },
+          "Change": {
+            "type": "number"
+          },
+          "ChangePercent": {
+            "type": "number"
+          },
+          "DayHigh": {
+            "type": "number"
+          },
+          "DayLow": {
+            "type": "number"
+          },
+          "OpenPrice": {
+            "type": "number"
+          },
+          "PreviousClose": {
+            "type": "number"
+          },
+          "Symbol": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "AAPL": {
+            "Price": 212.49,
+            "Change": -1.75,
+            "ChangePercent": -0.8168,
+            "DayHigh": 215.17,
+            "DayLow": 211.3,
+            "OpenPrice": 213.81,
+            "PreviousClose": 214.24,
+            "Symbol": "AAPL",
+            "Name": "Apple Inc"
+          }
+        }
+      },
+      "400Response": {
+        "type": "object",
+        "title": "400Response",
+        "description": "500 Response",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "message": "Missing symbol"
+          },
+          "Example 2": {
+            "message": "Missing symbols"
+          }
+        }
+      },
+      "WatchlistResponse": {
+        "type": "object",
+        "properties": {
+          "Watchlist": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ChangePercent": {
+                  "type": "number"
+                },
+                "Price": {
+                  "type": "number"
+                },
+                "Change": {
+                  "type": "number"
+                },
+                "Volume": {
+                  "type": "integer"
+                },
+                "Name": {
+                  "type": "string"
+                },
+                "Symbol": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "Watchlist": [
+              {
+                "Price": 198.47,
+                "Change": 0.17,
+                "ChangePercent": 0.0857,
+                "Symbol": "TXN",
+                "Name": "Texas Instruments Inc"
+              },
+              {
+                "Price": 22.77,
+                "Change": 0.33,
+                "ChangePercent": 1.4706,
+                "Symbol": "INTC",
+                "Name": "Intel Corp"
+              }
+            ]
+          }
+        }
+      },
+      "204Response": {
+        "type": "object",
+        "title": "204Response",
+        "description": "204 Response",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "message": "Symbol(s) not found"
+          }
+        }
+      },
+      "500Response": {
+        "type": "object",
+        "title": "500Response",
+        "description": "500 Response",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "message": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

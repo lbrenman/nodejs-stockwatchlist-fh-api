@@ -6,6 +6,8 @@ Uses API Key Authentication
 
 Add a .env file to your NodeJS project to contain your API Key and Finnhub.io API Key
 
+Repo includes stock.json OAS Doc
+
 ```
 FINNHUBAPIKEY={{Your finnhub.io API Key}}
 USER_API_KEY={{API Key for client calls}}
